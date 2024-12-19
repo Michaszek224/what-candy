@@ -1,4 +1,4 @@
-# what-candy
+# what-should-i-eat-candy-version
 Projekt na sztuczną inteligencję 2025
 
 Autorzy:
