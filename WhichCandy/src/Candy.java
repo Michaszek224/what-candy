@@ -57,98 +57,88 @@ class Candy implements ActionListener
    boolean isExecuting = false;
    Thread executionThread;
       
-   Candy()
-     {  
-      try
-        {
-         autoResources = ResourceBundle.getBundle("resources.AutoResources",Locale.getDefault());
-        }
-      catch (MissingResourceException mre)
-        {
-         mre.printStackTrace();
-         return;
-        }
-      
-      /*================================*/
-      /* Create a new JFrame container. */
-      /*================================*/
-     
-      JFrame jfrm = new JFrame(autoResources.getString("Candy"));  
- 
-      /*=============================*/
-      /* Specify FlowLayout manager. */
-      /*=============================*/
-        
-      jfrm.getContentPane().setLayout(new GridLayout(3,1));  
- 
-      /*=================================*/
-      /* Give the frame an initial size. */
-      /*=================================*/
-     
-      jfrm.setSize(350,200);  
+   Candy() {  
+	   try {
+	      autoResources = ResourceBundle.getBundle("resources.AutoResources", Locale.getDefault());
+	   } catch (MissingResourceException mre) {
+	      mre.printStackTrace();
+	      return;
+	   }
+	   
+	   /*================================*/
+	   /* Create a new JFrame container. */
+	   /*================================*/
+	   JFrame jfrm = new JFrame(autoResources.getString("Candy"));
+	   
+	   /*=================================*/
+	   /* Make the window resizable. */
+	   /*=================================*/
+	   jfrm.setResizable(true); // Add this here
+
+	   /*=============================*/
+	   /* Specify FlowLayout manager. */
+	   /*=============================*/
+	   jfrm.getContentPane().setLayout(new GridLayout(3, 1));
+
+	   /*=================================*/
+	   /* Give the frame an initial size. */
+	   /*=================================*/
+	   jfrm.setSize(350, 200);
+
+	   /*=============================================================*/
+	   /* Terminate the program when the user closes the application. */
+	   /*=============================================================*/
+	   jfrm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+	   /*===========================*/
+	   /* Create the display panel. */
+	   /*===========================*/
+	   JPanel displayPanel = new JPanel();
+	   displayLabel = new JLabel();
+	   displayPanel.add(displayLabel);
+
+	   /*===========================*/
+	   /* Create the choices panel. */
+	   /*===========================*/
+	   choicesPanel = new JPanel();
+	   choicesButtons = new ButtonGroup();
+
+	   /*===========================*/
+	   /* Create the buttons panel. */
+	   /*===========================*/
+	   JPanel buttonPanel = new JPanel();
+
+	   prevButton = new JButton(autoResources.getString("Prev"));
+	   prevButton.setActionCommand("Prev");
+	   buttonPanel.add(prevButton);
+	   prevButton.addActionListener(this);
+
+	   nextButton = new JButton(autoResources.getString("Next"));
+	   nextButton.setActionCommand("Next");
+	   buttonPanel.add(nextButton);
+	   nextButton.addActionListener(this);
+
+	   /*=====================================*/
+	   /* Add the panels to the content pane. */
+	   /*=====================================*/
+	   jfrm.getContentPane().add(displayPanel);
+	   jfrm.getContentPane().add(choicesPanel);
+	   jfrm.getContentPane().add(buttonPanel);
+
+	   /*========================*/
+	   /* Load the auto program. */
+	   /*========================*/
+	   clips = new Environment();
+	   clips.load("candy.clp");
+	   clips.reset();
+	   candy();
+
+	   /*====================*/
+	   /* Display the frame. */
+	   /*====================*/
+	   jfrm.setVisible(true);
+	}
   
-      /*=============================================================*/
-      /* Terminate the program when the user closes the application. */
-      /*=============================================================*/
-     
-      jfrm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
- 
-      /*===========================*/
-      /* Create the display panel. */
-      /*===========================*/
-      
-      JPanel displayPanel = new JPanel(); 
-      displayLabel = new JLabel();
-      displayPanel.add(displayLabel);
-      
-      /*===========================*/
-      /* Create the choices panel. */
-      /*===========================*/
-     
-      choicesPanel = new JPanel(); 
-      choicesButtons = new ButtonGroup();
-      
-      /*===========================*/
-      /* Create the buttons panel. */
-      /*===========================*/
-
-      JPanel buttonPanel = new JPanel(); 
-      
-      prevButton = new JButton(autoResources.getString("Prev"));
-      prevButton.setActionCommand("Prev");
-      buttonPanel.add(prevButton);
-      prevButton.addActionListener(this);
-      
-      nextButton = new JButton(autoResources.getString("Next"));
-      nextButton.setActionCommand("Next");
-      buttonPanel.add(nextButton);
-      nextButton.addActionListener(this);
-     
-      /*=====================================*/
-      /* Add the panels to the content pane. */
-      /*=====================================*/
-      
-      jfrm.getContentPane().add(displayPanel); 
-      jfrm.getContentPane().add(choicesPanel); 
-      jfrm.getContentPane().add(buttonPanel); 
-
-      /*========================*/
-      /* Load the auto program. */
-      /*========================*/
-      
-      clips = new Environment();
-      
-      clips.load("candy.clp");
-      
-      clips.reset();
-      candy();
-
-      /*====================*/
-      /* Display the frame. */
-      /*====================*/
-      
-      jfrm.setVisible(true);  
-     }  
 
    /****************/
    /* nextUIState: */
@@ -388,6 +378,7 @@ class Candy implements ActionListener
      
    public static void main(String args[])
      {  
+	   
       // Create the frame on the event dispatching thread.  
       SwingUtilities.invokeLater(
         new Runnable() 
